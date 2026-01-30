@@ -15,3 +15,4 @@ resumes/
 output/
 config.yaml
 .playwright/
+*.DS_Store
