@@ -1,0 +1,56 @@
+# Job Automator Configuration
+# Copy to config.yaml and fill in your details
+
+profile:
+  name: "Your Name"
+  email: "you@example.com"
+  phone: "+1-555-000-0000"
+  location: "San Francisco, CA"
+  title: "Software Engineer"
+  years_experience: 3
+  skills:
+    - Python
+    - JavaScript
+    - SQL
+  resume_path: "resumes/resume.pdf"
+  linkedin_url: "https://linkedin.com/in/yourprofile"
+  github_url: "https://github.com/yourusername"
+  portfolio_url: ""
+
+search:
+  default_query: "software engineer"
+  default_location: "remote"
+  sites:
+    - linkedin
+    - indeed
+  results_per_site: 25
+  min_score: 60
+  excluded_companies: []
+  excluded_keywords: []
+
+ai:
+  provider: "gemini"  # gemini, anthropic, openai, ollama
+  model: ""  # Leave empty for provider default
+  api_key: ""  # Or set GEMINI_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY env var
+  ollama_host: "http://localhost:11434"
+  temperature: 0.7
+
+email:
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  sender_email: ""
+  sender_password: ""  # Gmail App Password
+  daily_limit: 20
+  delay_between_sends: 30  # seconds
+  signature: |
+    Best regards,
+    {name}
+
+apply:
+  dry_run: true
+  screenshot_before_submit: true
+  auto_apply_threshold: 80
+  max_daily_applications: 10
+
+database:
+  path: "jobs.db"
