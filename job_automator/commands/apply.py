@@ -145,6 +145,8 @@ def apply_auto(
 
     print_info(f"Found {len(jobs)} jobs above threshold ({threshold})")
 
+    applied_companies: set[str] = set()
+
     for job in jobs:
         existing = get_application_by_job(job.id)
         if existing and existing.status not in (
@@ -153,10 +155,19 @@ def apply_auto(
         ):
             continue
 
+        # Same-company cooldown: skip if we already applied to this company in this batch
+        company_key = job.company.lower().strip()
+        if company_key in applied_companies:
+            print_warning(
+                f"Skipping '{job.title}' — already applied to {job.company} in this batch"
+            )
+            continue
+
         console.print(f"\n[bold]{job.title}[/bold] at [cyan]{job.company}[/cyan] (score: {job.match_score})")
 
         try:
             apply_single(job.id, dry_run=dry_run, no_cover_letter=False)
+            applied_companies.add(company_key)
         except (typer.Exit, SystemExit):
             continue
         except Exception as e:

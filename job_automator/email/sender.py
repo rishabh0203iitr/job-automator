@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import smtplib
 import time
 from datetime import datetime
@@ -10,6 +11,13 @@ from email.mime.text import MIMEText
 
 from job_automator.config.settings import get_settings
 from job_automator.db.repository import count_emails_sent_today
+
+_EMAIL_RE = re.compile(r"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$")
+
+
+def validate_email(email: str) -> bool:
+    """Check if an email address has a valid format."""
+    return bool(_EMAIL_RE.match(email.strip()))
 
 
 class EmailSender:
@@ -43,6 +51,9 @@ class EmailSender:
         reply_to: str = "",
     ) -> bool:
         """Send a single email. Returns True on success."""
+        if not validate_email(to_email):
+            raise ValueError(f"Invalid email address: {to_email}")
+
         can, reason = self.can_send()
         if not can:
             raise RuntimeError(reason)
